@@ -23,40 +23,28 @@ function solveEquation(a, b, c) {
 function calculateTotalMortgage(percent, contribution, amount, date) {
   "use strict";
   let totalAmount; // сумма, которую в итоге заплатит клиент
-  let now = new Date(); // текущая дата
+  let currentMonth = new Date().getMonth(); // текущий месяц
+  let currentYear = new Date().getFullYear(); // текущий год
   let loanBody; // тело кредита
+  let diffInYears; // разница в годах
   let diffInMonts; // срок кредита в месяцах
   let monthlyPayment; // ежемесячный платеж
   let ratio = percent / 12 / 100; // коэфф. равный 1/12 процентной ставки, приведенный к дроби
   let result; // итоговая сумма, округленная и приведенная к числовому типу
 
-  if ((percent = String(percent))) {
-    percent = Number(percent);
-  } else
-    alert(
-      `Параметр процентная ставка содержит неправильное значение ${percent}`
-    );
-
-  if ((contribution = String(contribution))) {
-    contribution = Number(contribution);
-  } else
-    alert(
-      `Параметр сумма первоначального взноса содержит неправильное значение ${contribution}`
-    );
-
-  if ((amount = String(amount))) {
-    amount = Number(amount);
-  } else
-    alert(`Параметр сумма кредита содержит неправильное значение ${amount}`);
-
-  if ((date = String(date))) {
-    date = Number(date);
-  } else alert(`Параметр срок кредита содержит неправильное значение ${date}`);
+  if (isNaN(percent)) {
+    return `Параметр "Процентная ставка" содержит неправильное значение "${percent}"`;
+  } else if (isNaN(contribution)) {
+    return `Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`;
+  } else if (isNaN(amount)) {
+    return `Параметр "Общая стоимость" содержит неправильное значение "${amount}"`;
+  }
 
   loanBody = amount - contribution;
   console.log(`Тело кредита составит ${loanBody} рублей`);
 
-  diffInMonts = Math.floor(((date - now) / (1000 * 60 * 60 * 24 * 30)) % 12);
+  diffInYears = date.getFullYear() - currentYear;
+  diffInMonts = diffInYears * 12 - currentMonth + date.getMonth();
   console.log(`Срок кредита составит ${diffInMonts} месяцев`);
 
   monthlyPayment =
