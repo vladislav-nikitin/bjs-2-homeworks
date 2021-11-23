@@ -10,23 +10,32 @@ class PrintEditionItem {
 
   fix() {
     this.state = this.state * 1.5;
-    //return this.state;
   }
 
-  set improveState(number) {
+  set state(number) {
     if (number < 0) {
-      this.state = 0;
+      this._state = 0;
     } else if (number > 100) {
-      this.state = 100;
+      this._state = 100;
     } else {
-      this.state = number;
+      this._state = number;
     }
   }
 
-  get improveState() {
-    return this._improveState;
+  get state() {
+    return this._state;
   }
 }
+
+// const sherlock = new PrintEditionItem(
+//   "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе",
+//   2019,
+//   1008
+// );
+// console.log(sherlock.releaseDate);
+// console.log(sherlock.state);
+// sherlock.fix();
+// console.log(sherlock.state);
 
 class Magazine extends PrintEditionItem {
   constructor(name, releaseDate, pagesCount) {
@@ -37,7 +46,7 @@ class Magazine extends PrintEditionItem {
 
 class Book extends PrintEditionItem {
   constructor(author, name, releaseDate, pagesCount) {
-    super(author, name, releaseDate, pagesCount);
+    super(name, releaseDate, pagesCount);
     this.author = author;
     this.type = "book";
   }
@@ -64,14 +73,17 @@ class DetectiveBook extends Book {
   }
 }
 
-const picknick = new FantasticBook(
-  "Аркадий и Борис Стругацкие",
-  "Пикник на обочине",
-  1972,
-  168
-);
+// const picknick = new FantasticBook(
+//   "Аркадий и Борис Стругацкие",
+//   "Пикник на обочине",
+//   1972,
+//   168
+// );
 
 // console.log(picknick.author);
+// console.log(picknick.name);
+// console.log(picknick.releaseDate);
+// console.log(picknick.pagesCount);
 // picknick.state = 10;
 // picknick.fix();
 // console.log(picknick.state);
@@ -84,22 +96,55 @@ class Library {
   }
 
   addBook(book) {
-    if (this.state > 30) {
-      this.books = this.books.push(book);
+    if (book.state > 30) {
+      this.books.push(book);
     }
   }
 
   findBookBy(type, value) {
-    this.books.find(value); // ??????
+    for (let i = 0; i <= this.books.length; i++) {
+      if (this.books[i][type] === type && this.books[i][value] === value) {
+        return this.books[i];
+      } else return null;
+    }
   }
 
   giveBookByName(bookName) {
-    if (this.books.find(bookName) === true) {
-      delete this.books[bookName];
-      return this.books[bookName];
-    } else return null;
+    for (let i = 0; i <= this.books.length; i++) {
+      if (this.books[i].name === bookName) {
+        delete this.books[i];
+        return this.books[i];
+      } else return null;
+    }
   }
 }
+
+const library = new Library("Библиотека имени Ленина");
+library.addBook(
+  new DetectiveBook(
+    "Артур Конан Дойл",
+    "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе",
+    2019,
+    1008
+  )
+);
+library.addBook(
+  new FantasticBook(
+    "Аркадий и Борис Стругацкие",
+    "Пикник на обочине",
+    1972,
+    168
+  )
+);
+
+library.addBook(new NovelBook("Герберт Уэллс", "Машина времени", 1895, 138));
+library.addBook(new Magazine("Мурзилка", 1924, 60));
+
+console.log(library.findBookBy("name", "Властелин колец"));
+console.log(library.findBookBy("releaseDate", 1924));
+// console.log("Количество книг до выдачи: " + library.books.length);
+// library.giveBookByName("Машина времени");
+// console.log(library.books)
 
 // Задача 3
 
