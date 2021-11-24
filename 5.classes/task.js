@@ -91,7 +91,7 @@ class DetectiveBook extends Book {
 // Задача 2
 class Library {
   constructor(name) {
-    this.name = "name";
+    this.name = name;
     this.books = [];
   }
 
@@ -103,7 +103,7 @@ class Library {
 
   findBookBy(type, value) {
     for (let i = 0; i <= this.books.length; i++) {
-      if (this.books[i][type] === type && this.books[i][value] === value) {
+      if (this.books[i][type] === value) {
         return this.books[i];
       } else return null;
     }
@@ -112,7 +112,7 @@ class Library {
   giveBookByName(bookName) {
     for (let i = 0; i <= this.books.length; i++) {
       if (this.books[i].name === bookName) {
-        delete this.books[i];
+        this.books.splice(this.books[i]);
         return this.books[i];
       } else return null;
     }
@@ -140,8 +140,8 @@ library.addBook(
 library.addBook(new NovelBook("Герберт Уэллс", "Машина времени", 1895, 138));
 library.addBook(new Magazine("Мурзилка", 1924, 60));
 
-console.log(library.findBookBy("name", "Властелин колец"));
-console.log(library.findBookBy("releaseDate", 1924));
+//console.log(library.findBookBy("name", "Властелин колец"));
+//console.log(library.findBookBy("releaseDate", 1924));
 // console.log("Количество книг до выдачи: " + library.books.length);
 // library.giveBookByName("Машина времени");
 // console.log(library.books)
