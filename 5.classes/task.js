@@ -102,7 +102,7 @@ class Library {
   }
 
   findBookBy(type, value) {
-    for (let i = 0; i <= this.books.length; i++) {
+    for (let i = 0; i < this.books.length; i++) {
       if (this.books[i][type] === value) {
         return this.books[i];
       }
@@ -111,7 +111,7 @@ class Library {
   }
 
   giveBookByName(bookName) {
-    for (let i = 0; i <= this.books.length; i++) {
+    for (let i = 0; i < this.books.length; i++) {
       if (this.books[i].name === bookName) {
         let founded = this.books[i];
         this.books.splice(founded, 1);
@@ -156,36 +156,54 @@ class Student {
     this.name = name;
     this.gender = gender;
     this.age = age;
+    this.marks = {};
   }
 
-  setSubject(subjectName) {
-    this.subject = subjectName;
-  }
+  // setSubject(subjectName) {
+  //   this.subject = subjectName;
+  // }
 
-  addMark(mark) {
-    if (this.marks === undefined) {
-      this.marks = [mark];
+  addMark(mark, subject) {
+    if (mark < 1 || mark >= 6) {
+      throw new Error("Ошибка, оценка должна быть числом от 1 до 5");
+    } else if (this.marks[subject] === undefined) {
+      this.marks[subject] = [mark];
     } else {
-      this.marks.push(mark);
+      this.marks[subject].push(mark);
     }
   }
 
-  addMarks(...marks) {
-    if (this.marks === undefined) {
-      this.marks = [...marks];
-    } else {
-      this.marks.push(...marks);
+  // addMarks(...marks) {
+  //   if (this.marks === undefined) {
+  //     this.marks = [...marks];
+  //   } else {
+  //     this.marks.push(...marks);
+  //   }
+  // };
+
+  getAverageBySubject(subject) {
+    if (this.marks[subject] === undefined) {
+      throw new Error("Несуществующий предмет");
     }
+    let sum = 0;
+    let count = 0;
+    for (let i = 0; i < this.marks[subject].length; i++) {
+      count += 1;
+      sum += this.marks[subject][i];
+    }
+    console.log(`Средний балл по предмету ${subject} ${sum / count}`);
   }
 
   getAverage() {
+    let marksValues = Object.values(this.marks);
+    let unitedArray = marksValues.flat();
     let sum = 0;
     let count = 0;
-    for (let i = 0; i < this.marks.length; i++) {
+    for (let i = 0; i < unitedArray.length; i++) {
       count += 1;
-      sum += this.marks[i];
+      sum += unitedArray[i];
     }
-    console.log(sum / count);
+    console.log(`Средний балл по всем предметам ${sum / count}`);
   }
 
   exclude(reason) {
@@ -193,44 +211,15 @@ class Student {
     delete this.marks;
     this.excluded = reason;
   }
-
-  addGrade(grade, subject) {
-    if (this.objWithJornals === undefined) {
-      this.objWithJornals = {
-        jornalAlgebra: [],
-        jornalGeometry: [],
-      };
-    }
-
-    if (grade < 1 && grade >= 6) {
-      return "Ошибка, оценка должна быть числом от 1 до 5";
-    }
-
-    if (subject === "algebra") {
-      this.objWithJornals.jornalAlgebra.push(grade);
-      return this.objWithJornals.jornalAlgebra;
-    }
-
-    if (subject === "geometry") {
-      this.objWithJornals.jornalGeometry.push(grade);
-      return this.objWithJornals.jornalGeometry;
-    }
-  }
 }
 
 let student1 = new Student("Tony", "male", 37);
-// student1.setSubject("Algebra");
-// student1.addMark(5);
-// student1.addMark(4);
-// student1.addMark(5);
+student1.addMark(5, "algebra");
+student1.addMark(5, "algebra");
+student1.addMark(5, "geometry");
+student1.addMark(4, "geometry");
 //student1.addMarks(5, 4, 3, 4, 5);
-//student1.getAverage();
+student1.getAverageBySubject("algebra");
+student1.getAverage();
 //student1.exclude('low grades')
-student1.addGrade(4, "algebra");
-student1.addGrade(6, "algebra");
-student1.addGrade(5, "geometry");
-console.log(student1);
-
-let student2 = new Student("Buzz", "female", 35);
-// student2.setSubject("Geometry");
-// console.log(student2);
+//console.log(student1);
